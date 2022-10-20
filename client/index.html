@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form action="">
+        <input id="email" type="email" />
+        <label id="email-label"></label>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </body>
+  <script>
+    /* -------- STEP 1 => REF TO INPUT & FORM -------- */
+
+    const email = document.getElementById("email");
+    const emailLabel = document.getElementById("email-label");
+    const form = document.querySelector("form");
+
+    /* --------  STEP 2 => VALIDATE INPUT -------- */
+
+    const validate = () => {
+      let isValid = true;
+
+      if (email.value === "") {
+        isValid = false;
+        emailLabel.textContent = "not valid";
+      } else {
+        emailLabel.textContent = null;
+      }
+
+      return isValid;
+    };
+
+    /* -------- STEP 3 => FETCH FUNCTION -------- */
+
+    const postData = async (data) => {
+      const response = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    };
+
+
+
+    /* -------- STEP 4 => SUBMIT FUNCTION -------- */
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (validate()) {
+        const data = {
+          email: email.value,
+        };
+        postData(data)
+        form.reset();
+      }
+    });
+  </script>
+</html>
